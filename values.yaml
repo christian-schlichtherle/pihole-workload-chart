@@ -1,0 +1,14 @@
+---
+affinity: {}
+dhcpEnabled: false
+domain: ""
+fullnameOverride: ""
+imageTag: latest
+nameOverride: pihole
+nodeSelector: {}
+podAnnotations: {}
+storageClassName: ""
+storageSizeRequest: 1Gi
+tlsEnabled: true
+tolerations: []
+tz: Europe/Berlin

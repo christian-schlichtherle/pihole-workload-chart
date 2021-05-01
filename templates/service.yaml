@@ -1,0 +1,53 @@
+---
+{{- with $.Values }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "labels" $ | nindent 4 }}
+  name: {{ include "fullname" $ }}-node-port
+spec:
+  ports:
+    - name: dns-tcp
+      nodePort: 53
+      port: 53
+      protocol: TCP
+      targetPort: dns-tcp
+    - name: dns-udp
+      nodePort: 53
+      port: 53
+      protocol: UDP
+      targetPort: dns-udp
+    {{- if .dhcpEnabled }}
+    - name: dhcp
+      nodePort: 67
+      port: 67
+      protocol: UDP
+      targetPort: dhcp
+    {{- end }}
+  selector:
+    {{- include "selectorLabels" $ | nindent 4 }}
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "labels" $ | nindent 4 }}
+  name: {{ include "fullname" $ }}
+spec:
+  clusterIP: None
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: http
+  {{- if .tlsEnabled }}
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: https
+  {{- end }}
+  selector:
+    {{- include "selectorLabels" $ | nindent 4 }}
+{{- end }}

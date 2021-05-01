@@ -1,0 +1,89 @@
+---
+{{- with $.Values }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    {{- include "labels" $ | nindent 4 }}
+  name: {{ include "fullname" $ }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "selectorLabels" $ | nindent 6 }}
+  serviceName: {{ include "fullname" $ }}
+  template:
+    metadata:
+    {{- with .podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "selectorLabels" $ | nindent 8 }}
+    spec:
+    {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      containers:
+        - env:
+            - name: TZ
+              value: {{ .tz }}
+            - name: VIRTUAL_HOST
+              value: {{ include "name" $ }}.{{ .domain }}
+          image: "pihole/pihole:{{ .imageTag }}"
+          name: pihole
+          ports:
+            - containerPort: 53
+              protocol: TCP
+              name: dns-tcp
+            - containerPort: 53
+              protocol: UDP
+              name: dns-udp
+          {{- if .dhcpEnabled }}
+            - containerPort: 67
+              protocol: UDP
+              name: dhcp
+          {{- end }}
+            - containerPort: 80
+              protocol: TCP
+              name: http
+          {{- if .tlsEnabled }}
+            - containerPort: 443
+              protocol: TCP
+              name: https
+          {{- end }}
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - mountPath: /etc/pihole
+              name: etc
+              subPath: etc/pihole
+            - mountPath: /etc/dnsmasq.d
+              name: etc
+              subPath: etc/dnsmasq.d
+      {{- with .nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: etc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .storageSizeRequest }}
+      {{- with .storageClassName }}
+        storageClassName: {{ . }}
+      {{- end }}
+        selector:
+          matchLabels:
+            app.kubernetes.io/name: {{ include "name" $ }}
+{{- end }}

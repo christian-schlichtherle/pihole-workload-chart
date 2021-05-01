@@ -1,0 +1,27 @@
+---
+{{- with $.Values }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    {{- include "labels" $ | nindent 4 }}
+  name: {{ include "fullname" $ }}
+spec:
+  rules:
+    - host: {{ include "name" $ }}.{{ .domain }}
+      http:
+        paths:
+          - backend:
+              service:
+                name: {{ include "fullname" $ }}
+                port:
+                  name: http
+            path: /
+            pathType: ImplementationSpecific
+{{- if .tlsEnabled }}
+  tls:
+    - hosts:
+        - {{ include "name" $ }}.{{ .domain }}
+      secretName: {{ include "fullname" $ }}
+{{- end }}
+{{- end }}

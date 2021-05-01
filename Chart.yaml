@@ -1,0 +1,11 @@
+---
+apiVersion: v2
+description: A Helm chart for deploying the Pi-hole workload to a Kubernetes cluster.
+keywords:
+  - Pi-hole
+  - workload
+maintainers:
+  - name: Christian Schlichtherle
+    url: https://christian.schlichtherle.de
+name: pihole-workload
+version: 0.1.0-SNAPSHOT
