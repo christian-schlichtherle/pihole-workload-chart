@@ -13,7 +13,7 @@ This is a Helm chart for deploying the [Pi-hole](https://pi-hole.net) workload t
 ## Prerequisites
 
 Provide a persistent volume for this chart in your cluster.
-Check [Pi-hole Volume Chart](https://github.com/christian-schlichtherle/pihole-volume-chart) as an example if you need
+Check [Pi-hole Volume Chart](https://github.com/christian-schlichtherle/pihole-volume-chart) for an example if you need
 help.
 
 ## How to configure
