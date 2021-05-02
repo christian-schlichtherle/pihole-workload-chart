@@ -13,7 +13,7 @@ spec:
         paths:
           - backend:
               service:
-                name: {{ include "fullname" $ }}
+                name: {{ include "fullname" $ }}-web
                 port:
                   name: http
             path: /
