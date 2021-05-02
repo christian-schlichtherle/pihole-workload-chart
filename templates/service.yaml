@@ -45,7 +45,6 @@ metadata:
     {{- include "labels" $ | nindent 4 }}
   name: {{ include "fullname" $ }}-web
 spec:
-  clusterIP: None
   ports:
     - name: http
       port: 80
