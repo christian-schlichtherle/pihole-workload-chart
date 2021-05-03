@@ -25,12 +25,11 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       containers:
-        - env:
-            - name: TZ
-              value: {{ .tz }}
-            - name: VIRTUAL_HOST
-              value: {{ include "name" $ }}.{{ .domain }}
-          image: "pihole/pihole:{{ .imageTag }}"
+        - image: "pihole/pihole:{{ .imageTag }}"
+        {{- with .env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+        {{- end }}
           name: pihole
           ports:
             - containerPort: 53

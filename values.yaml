@@ -2,6 +2,11 @@
 affinity: {}
 dhcpEnabled: false
 domain: ""
+env:
+#  - name: VIRTUAL_HOST
+#    value: <nameOverride>.<domain>
+  - name: TZ
+    value: Europe/Berlin
 fullnameOverride: ""
 imageTag: latest
 nameOverride: pihole
@@ -11,4 +16,3 @@ storageClassName: ""
 storageSizeRequest: 1Gi
 tlsEnabled: true
 tolerations: []
-tz: Europe/Berlin
