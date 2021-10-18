@@ -82,7 +82,4 @@ spec:
       {{- with .storageClassName }}
         storageClassName: {{ . }}
       {{- end }}
-        selector:
-          matchLabels:
-            app.kubernetes.io/name: {{ include "name" $ }}
 {{- end }}
