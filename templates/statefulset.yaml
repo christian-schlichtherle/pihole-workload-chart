@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:
       {{- include "selectorLabels" $ | nindent 6 }}
-  serviceName: {{ include "fullname" $ }}
+  serviceName: {{ include "fullname" $ }}-web
   template:
     metadata:
     {{- with .podAnnotations }}
